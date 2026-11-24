@@ -1,0 +1,19 @@
+name: Mac-App bauen
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: App bauen
+        run: ./build-app.sh --universal
+      - name: Zippen
+        run: cd build && ditto -c -k --keepParent Pixelwisch.app Pixelwisch.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pixelwisch
+          path: build/Pixelwisch.zip
